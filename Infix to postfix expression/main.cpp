@@ -16,8 +16,43 @@ int prec(char n) {
 	case '-':
 		return 1;
 	default:
-		return 0;
+		return -1;
 	}
+}
+int solve_postfix(string exp) {
+	stack<int> st;
+	int op1, op2, res;
+	for (char c : exp) {
+		if (isdigit(c))
+			st.push(atoi(&c));
+		else  {
+			op2 = st.top();
+			st.pop();
+			op1 = st.top();
+			st.pop();
+			switch (c) {
+				case '^':
+					res = op1 ^ op2;
+					break;
+				case '*':
+					res = op1 * op2;
+					break;
+				case '/':
+					res = op1 / op2;
+					break;
+				case '+':
+					res = op1 + op2;
+					break;
+				case '-':
+					res = op1 - op2;
+					break;
+				default:
+					res = 0;
+			}
+			st.push(res);
+		}
+	}
+	return res;
 }
 string infix_to_postfix(string exp) {
 	stack<char> st;
@@ -55,5 +90,6 @@ string infix_to_postfix(string exp) {
 
 int main() {
 	
-	cout << infix_to_postfix("2*3/2+3-7") << endl;
+	string s = infix_to_postfix("2*3/2+3-2");
+	cout << s << " " << solve_postfix(s) << endl;
 }
